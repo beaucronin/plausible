@@ -1,0 +1,26 @@
+inputs:
+  - INPUT_001
+
+output:
+- node_type: VARCHAR(32)
+- node_id: VARCHAR(256)
+- period: INTEGER
+- observable_count: INTEGER
+- iso_timestamp: VARCHAR(32)
+
+pumps:
+- 5_MINUTE:
+  - input: INPUT_001
+  - select:
+    - node_type
+    - node_id
+    - 5
+    - count(*)
+    - "TIMESTAMP_TO_CHAR('yyyy-MM-dd HH:mm:ssZ', CURRENT_ROW_TIMESTAMP)"
+  - windowed:
+    by: stagger
+    clause: 'PARTITION BY "node_type", "node_id" RANGE INTERVAL ''15'' MINUTE'
+  - where:
+    - ne:
+      left: node_type
+      right: "'reading'"

@@ -1,0 +1,4 @@
+colorama
+python-terraform
+shellingham
+typer

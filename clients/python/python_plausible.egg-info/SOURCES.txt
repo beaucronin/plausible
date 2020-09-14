@@ -1,0 +1,7 @@
+README.md
+setup.py
+python_plausible.egg-info/PKG-INFO
+python_plausible.egg-info/SOURCES.txt
+python_plausible.egg-info/dependency_links.txt
+python_plausible.egg-info/not-zip-safe
+python_plausible.egg-info/top_level.txt

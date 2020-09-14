@@ -2,3 +2,4 @@
 .mypy_cache/
 provider/vendor/**
 .vscode/*
+.gitignore.swp

@@ -1,8 +1,41 @@
+from __future__ import annotations
 from typing import Dict, Any, Union, Optional
 from .resource import PlausibleResource
 import json
 import boto3
 from botocore.response import StreamingBody
+
+from .exceptions import ItemNotFoundException, PlausibleException
+
+import logging
+
+logger = logging.getLogger(__name__)
+
+
+class ObjectStoreKey(object):
+    SEP = "/"
+
+    def __init__(self, *args, **kwargs):
+        self.components = []
+        self.__append(*args, **kwargs)
+
+    def append(self, *args, **kwargs) -> ObjectStoreKey:
+        self.__append(*args, **kwargs)
+        return self
+
+    def __append(self, *args, **kwargs):
+        key_component: str
+        component_value: str
+        if len(args) == 1:
+            # Only the value is provided, so we assume a terminal
+            component_value = args[0]
+        elif len(args) == 2:
+            key_component = args[0]
+            component_value = args[1]
+
+    def __str__(self):
+        return SEP.join([v for _, v in components])
+
 
 Key = Union[ObjectStoreKey, str]
 
@@ -60,10 +93,18 @@ class ObjectStore(PlausibleResource):
     def get_string(self, key: Key, compression=None, encoding="utf-8") -> str:
         raise NotImplementedError()
 
-    def get_object(self, key: Key, compression=None, fmt: str = None) -> Optional[object]:
+    def get_object(
+        self, key: Key, compression=None, fmt: str = None
+    ) -> Optional[object]:
         raise NotImplementedError()
 
-    def __stringify_key(self, key: Key) -> str:
+    def put(self, key: Key, data: Any) -> bool:
+        raise NotImplementedError()
+
+    def delete(self, key: Key) -> bool:
+        raise NotImplementedError()
+
+    def _stringify_key(self, key: Key) -> str:
         if isinstance(key, ObjectStoreKey):
             if not self.key_matches_structure(key):
                 raise Exception(f"Key {key} does not match structure")
@@ -92,9 +133,25 @@ class AWSObjectStore(ObjectStore):
         s3 = boto3.resource("s3")
         self.bucket = s3.Bucket(self.store_name)
 
+    @classmethod
+    def maybe_raise(cls, resp):
+        status_code = resp["ResponseMetadata"]["HTTPStatusCode"]
+        logger.info(status_code)
+        if status_code == 200:
+            return
+        else:
+            return
+
+    def wrap_exception(self, e, **kwargs):
+        if repr(e).startswith("NoSuchKey"):
+            raise ItemNotFoundException(f"Item {kwargs['key']} was not found in {self.bucket.name}") from e
+        else:
+            raise PlausibleException("Unrecognized AWS exception") from e
+
     def get_bytes(self, key: Key, compression=None) -> bytes:
-        key_str = self.__stringify_key(key)
+        key_str = self._stringify_key(key)
         resp = self.__get(key_str)
+        # self.maybe_raise(resp)
         body: StreamingBody = ObjectStore.maybe_uncompress(resp["Body"], compression)
         return body.read()
 
@@ -103,7 +160,9 @@ class AWSObjectStore(ObjectStore):
         s = b.decode(encoding)
         return s
 
-    def get_object(self, key: Key, compression=None, fmt:str =None) -> Optional[object]:
+    def get_object(
+        self, key: Key, compression=None, fmt: str = None
+    ) -> Optional[object]:
         if not fmt:
             fmt = "json"
         fmt = fmt.lower()
@@ -119,34 +178,24 @@ class AWSObjectStore(ObjectStore):
 
     def __get(self, key: str):
         obj = self.bucket.Object(key)
-        resp = obj.get()
-        return resp
+        try:
+            resp = obj.get()
+            return resp
+        except Exception as e:
+            self.wrap_exception(e, key=key)
+
+    def put(self, key: Key, data: Any) -> bool:
+        obj = self.bucket.Object(self._stringify_key(key))
+        if isinstance(data, str):
+            res = obj.put(Body=data)
+            return True
+        else:
+            return False
+
+    def delete(self, key: Key) -> bool:
+        obj = self.bucket.Object(self._stringify_key(key))
+        res = obj.delete()
+        return True
 
     def __put(self, key, data):
         pass
-
-
-class ObjectStoreKey(object):
-    SEP = "/"
-
-    def __init__(self, *args, **kwargs):
-        self.components = []
-        self.__append(*args, **kwargs)
-
-    def append(self, *args, **kwargs) -> ObjectStoreKey:
-        self.__append(*args, **kwargs)
-        return self
-
-    def __append(self, *args, **kwargs):
-        key_component: str
-        component_value: str
-        if len(args) == 1:
-            # Only the value is provided, so we assume a terminal
-            component_value = args[0]
-        elif len(args) == 2:
-            key_component = args[0]
-            component_value = args[1]
-
-    def __str__(self):
-        return SEP.join([v for _, v in components])
-

@@ -1,7 +1,8 @@
+from __future__ import annotations
 from typing import cast, Dict, Any, Union, List, Tuple, Optional
 from decimal import Decimal
 
-from .resource import PlausibleResource, QueryRequest, QueryResponse
+from plausible.resource import PlausibleResource, QueryRequest, QueryResponse
 
 """
 resource "plausible_keyvalue_store" "kv" {

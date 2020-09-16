@@ -1,20 +1,9 @@
+from __future__ import annotations
 from typing import Dict, Any, Type, Optional
-
-from .object_store import ObjectStore
-from .keyvalue_store import KeyValueStore
-from .document_store import DocumentStore
-from .http_api import HttpApi
 
 import logging
 
 logger = logging.getLogger(__name__)
-
-resource_map = {
-    "plausible_object_store": ObjectStore,
-    "plausible_keyvalue_store": KeyValueStore,
-    "plausible_document_store": DocumentStore,
-    "plausible_http_api": HttpApi
-}
 
 class PlausibleResource(object):
     def __init__(self, fullname):
@@ -27,8 +16,14 @@ class PlausibleResource(object):
         resource_name = state["name"]
         resource_atts = state["instances"][0]["attributes"]
         
+        from plausible import ObjectStore, KeyValueStore
+
+        resource_map = {
+            "plausible_object_store": ObjectStore,
+            "plausible_keyvalue_store": KeyValueStore,
+        }
         ResourceClass: Optional[Type[PlausibleResource]] = resource_map.get(resource_type, None)
-        if ResourceClass:  
+        if ResourceClass:
             resource = ResourceClass.create(resource_name, resource_atts, environment)
             return resource
         else:

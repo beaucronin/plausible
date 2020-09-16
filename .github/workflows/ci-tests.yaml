@@ -1,0 +1,17 @@
+name: Perform integration tests on push
+on: 
+  push:
+    branches: 
+      - master
+jobs:
+  build:
+    name: Test job
+    runs-on: ubuntu-latest
+    steps:
+      - name: Hello world
+        uses: actions/hello-world-javascript-action@v1.1
+        with:
+          who-to-greet: 'Beau'
+        id: hello
+
+

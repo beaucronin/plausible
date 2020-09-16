@@ -1,6 +1,6 @@
 # Plausible
 
-![Integration Tests](https://github.com/beaucronin/plausible/workflows/ci-tests/badge.svg)
+![Integration Tests](https://github.com/beaucronin/plausible/workflows/integration-tests/badge.svg)
 
 Serverless approaches are very exciting, but they have come of age in the context of public cloud platforms that must meet the needs of a very wide range of requirements and development contexts. There is no "pure play" serverless cloud that includes all of the components necessary to build applications that deliver all of the benefits of serverless methods. Instead, their position as junior members of major cloud platforms  serverless capabilities to be obscured, compromised, and under-invested - a better serverless world is possible.
 

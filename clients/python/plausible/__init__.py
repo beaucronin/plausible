@@ -36,7 +36,7 @@ class Resources(object):
         self.__load_state(app_home)
 
     def __load_state(self, app_home):
-        logger.info(app_home)
+        logger.info(f"Using app_home {app_home}")
         tf_state = os.path.join(app_home, "infra", "terraform.tfstate")
         if not os.path.exists(tf_state):
             logger.error(f"No terraform state found at {tf_state}")

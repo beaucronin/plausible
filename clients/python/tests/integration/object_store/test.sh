@@ -1,12 +1,18 @@
 #!/bin/bash
 
 cd infra
-terraform init
-terraform apply
+echo Terraform INIT
+terraform init > /dev/null
+echo Terraform APPLY
+terraform apply -no-color -auto-approve
 
+echo ---------------------------
 cd ..
+echo Running tests
 cp infra/terraform.tfstate .
-python -m tests.py
+python tests.py
 
+echo ---------------------------
 cd infra
-terraform destroy
+echo TERRAFORM DESTROY
+terraform destroy -no-color -auto-approve

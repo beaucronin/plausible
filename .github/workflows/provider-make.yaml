@@ -1,6 +1,8 @@
-name: Provder Make
+name: Provider Make
 on:
   push:
+    branches:
+      - __none
     paths:
       - 'provider/*'
 

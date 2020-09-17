@@ -9,10 +9,11 @@ OS_ARCH=darwin_amd64
 default: install
 
 build:
-	go build -o ${BINARY}
+	go build -ldflags="-s -w" -o ${BINARY}
+	upx -5 ${BINARY}
 
 release:
-	GOOS=darwin GOARCH=amd64 go build -o ./bin/${BINARY}_${VERSION}_darwin_amd64
+	GOOS=darwin GOARCH=amd64 go build -ldflags="-s -w" -o ./bin/${BINARY}_${VERSION}_darwin_amd64
 	GOOS=freebsd GOARCH=386 go build -o ./bin/${BINARY}_${VERSION}_freebsd_386
 	GOOS=freebsd GOARCH=amd64 go build -o ./bin/${BINARY}_${VERSION}_freebsd_amd64
 	GOOS=freebsd GOARCH=arm go build -o ./bin/${BINARY}_${VERSION}_freebsd_arm

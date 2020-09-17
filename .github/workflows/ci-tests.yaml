@@ -2,7 +2,7 @@ name: integration-tests
 on: 
   push:
     branches: 
-      - master
+      - __none
 jobs:
   build:
     name: Test job

@@ -2,11 +2,36 @@
 
 ![Integration Tests](https://github.com/beaucronin/plausible/workflows/integration-tests/badge.svg)
 
+- [Design Decisions](#design-decisions)
+- [Resource Primitives](#resource-primitives)
+  - [Function](#function)
+  - [Object Store](#object-store)
+  - [Key-Value Store](#key-value-store)
+  - [Publisher](#publisher)
+  - [Stream Processor](#stream-processor)
+  - [HTTP API](#http-api)
+- [Store Types](#store-types)
+- [Data Transformations](#data-transformations)
+- [Cross-cutting Services](#cross-cutting-services)
+  - [Logging and Log Aggregation](#logging-and-log-aggregation)
+  - [Monitoring](#monitoring)
+  - [Permission and Authorization](#permission-and-authorization)
+- [Application Structure](#application-structure)
+- [Infrastructure](#infrastructure)
+- [What's Missing](#whats-missing)
+  - [Relational Database](#relational-database)
+  - [Long-running processes](#long-running-processes)
+  - [Distributed Call Tracing](#distributed-call-tracing)
+  - [Other API Formats](#other-api-formats)
+  - [Explicit Orchestration](#explicit-orchestration)
+- [Comparisons](#comparisons)
+  - [Serverless Framework](#serverless-framework)
+
 Serverless approaches are very exciting, but they have come of age in the context of public cloud platforms that must meet the needs of a very wide range of requirements and development contexts. There is no "pure play" serverless cloud that includes all of the components necessary to build applications that deliver all of the benefits of serverless methods. Instead, their position as junior members of major cloud platforms  serverless capabilities to be obscured, compromised, and under-invested - a better serverless world is possible.
 
 Plausible is a (currently experimental) framework whose primary goal is to improve by 10x developer productivity in writing serverless applications. These gains will be delivered by a combination of the following methods:
 
-1. *Modern cloud providers have contually added new services over many years, to the point where a single developer can't be familiar with all of them and significant effort must be expended just to learn which ones are essential.* 
+1. *Modern cloud providers have continually added new services over the years, to the point where a single developer can't be familiar with all of them and significant effort must be expended just to learn which ones are essential.* 
    * => Reduce the number of resource types to the core primitives that are most commonly used in serverless applications. 
 2. *Individual cloud services must serve large developer audiences with diverse requirements, most of which are irrelevant for new serverless applications.*
    * => In the spirit of opinoinated frameworks like Ruby on Rails, lean heavily on conventions and defaults to simplify development and reduce cognitive load. Be fearless about excluding features that do not pay their way in value for the complexity they bring.

@@ -60,6 +60,7 @@ Plausible includes the minimum set of primitives needed to implement the majorit
 | Publisher | SNS + SQS | Event Grid | Pub/Sub |
 | Stream Processor | Kinesis \[Firehose, Analytics\] | Stream Analytics | Cloud DataFlow |
 | HTTP API | API Gateway | API Apps | Apigee API Management |
+| GraphQL API | AppSync | | |
 
 ### Function
 A function is the most general component of a Plausible application - an arbitrary program that can perform just about any input, processing, and output operations. While Plausible does not impose or enforce constraints on Functions, it does encourage certain patterns that, if followed, greatly simplify the design, analysis, and implementation of applications.

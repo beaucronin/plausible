@@ -30,6 +30,7 @@ setup(
         "python-terraform",
         "shellingham",
         "typer",
+        "basket_case",
         "strictyaml @ git+https://github.com/beaucronin/strictyaml@v1.1.1#egg=strictyaml",
         # "git+https://github.com/beaucronin/strictyaml",
     ],

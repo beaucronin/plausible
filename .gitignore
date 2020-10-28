@@ -4,4 +4,4 @@ provider/vendor/**
 .vscode/*
 .gitignore.swp
 *.pyc
-*/.terraform/*
+**/.terraform/

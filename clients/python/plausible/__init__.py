@@ -10,6 +10,7 @@ import sys
 # print(dir(ObjectStore))
 from .object_store import ObjectStore
 from .keyvalue_store import KeyValueStore
+from .function import Function
 from .exceptions import PlausibleException, ItemNotFoundException
 
 # from .document_store import DocumentStore
@@ -68,5 +69,8 @@ class Resources(object):
     def __getattr__(self, name):
         return self.resources.get(name, None)
 
+def get_current_function(resources: Resources):
+    pass
 
 resource = Resources(os.getenv("PBL_APP_HOME", "."))
+function = get_current_function(resource)

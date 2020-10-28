@@ -1,0 +1,35 @@
+resources:
+  - keyvalue_store: 
+      name: stations
+      collection_name: NWISStations
+      primary_index:
+        partition_key: station_id
+      secondary_index:
+        si1:
+          partition_key: foo
+          row_key: bar
+        si2:
+          partition_key: baz
+  - function: 
+      name: retrieve-stations
+      triggers:
+        - schedule:
+            cron: "5 0 * * * *"
+      outputs:
+        station:
+          target: "keyvalue_store.stations"
+  - function: 
+      name: fetch-all-stations
+      triggers:
+        - schedule: 
+            cron: "15 * * * * *"
+      outputs:
+        fetch-station:
+          target: function.fetch-station
+  - function: 
+      name: fetch-station
+      triggers:
+        - function: 
+            caller: fetch-all-stations
+
+            

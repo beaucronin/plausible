@@ -2,6 +2,8 @@ from __future__ import annotations
 from typing import Dict, Any, Union, Optional
 from .resource import PlausibleResource
 import json
+import io
+from smart_open import open
 import boto3
 from botocore.response import StreamingBody
 
@@ -130,8 +132,8 @@ class AWSObjectStore(ObjectStore):
     def __init__(self, name, atts):
         super().__init__(name, atts)
 
-        s3 = boto3.resource("s3")
-        self.bucket = s3.Bucket(self.store_name)
+        # s3 = boto3.resource("s3")
+        # self.bucket = s3.Bucket(self.store_name)
 
     @classmethod
     def maybe_raise(cls, resp):
@@ -144,18 +146,24 @@ class AWSObjectStore(ObjectStore):
 
     def wrap_exception(self, e, **kwargs):
         if repr(e).startswith("NoSuchKey"):
-            raise ItemNotFoundException(f"Item {kwargs['key']} was not found in {self.bucket.name}") from e
+            raise ItemNotFoundException(
+                f"Item {kwargs['key']} was not found in {self.bucket.name}"
+            ) from e
         else:
             raise PlausibleException("Unrecognized AWS exception") from e
 
-    def get_bytes(self, key: Key, compression=None) -> bytes:
+    def get_bytes(self, key: Key, compression=None, as_stream=False) -> Union[bytes]:
         key_str = self._stringify_key(key)
-        resp = self.__get(key_str)
-        # self.maybe_raise(resp)
-        body: StreamingBody = ObjectStore.maybe_uncompress(resp["Body"], compression)
-        return body.read()
+        addr = f"s3://{self.store_name}/{key_str}"
+        try:
+            with open(addr) as obj:
+                return obj.read()
+        except Exception as e:
+            self.wrap_exception(e, key=key)
 
-    def get_string(self, key: Key, compression=None, encoding="utf-8") -> str:
+    def get_string(
+        self, key: Key, compression=None, encoding="utf-8", as_stream=False
+    ) -> str:
         b: bytes = self.get_bytes(key)
         s = b.decode(encoding)
         return s

@@ -1,0 +1,54 @@
+app_name: totality
+resources:
+  - http_api: 
+      name: public
+      openapi_spec:
+        paths:
+          /observations:
+            post:
+              summary: Adds a new observation
+              responses:
+                '200':
+                  description: Success
+                  content:
+                    application/json:
+                      schema:
+                        $ref: '#/schemas/'
+        
+        components:
+          schemas:
+            BasicResponse:
+              type: object
+              properties:
+                code:
+                  type: string
+                message:
+                  type: string
+  - function: 
+      name: post-observations
+      triggers:
+        - api_route:
+            http_api: public
+            route: /observations
+            method: post
+            content_type: application/json
+  - object_store:
+      name: my-store
+  - keyvalue_store: 
+      name: observations
+      collection_name: TotalityObservations
+      primary_index:
+        partition_key: ObservationId
+      secondary_index:
+        gsi1:
+          partition_key: foo
+          row_key: bar
+  - publisher: 
+      name: observation-events
+  - function: 
+      name: example-interpreter
+      triggers:
+        - subscription:
+            publisher: observation-events
+
+    

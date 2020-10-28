@@ -1,11 +1,3 @@
-# -*- coding: utf8 -*-
-#
-# This file were created by Python Boilerplate. Use Python Boilerplate to start
-# simple, usable and best-practices compliant Python projects.
-#
-# Learn more about it at: http://github.com/fabiommendes/python-boilerplate/
-#
-
 import os
 
 from setuptools import setup, find_packages

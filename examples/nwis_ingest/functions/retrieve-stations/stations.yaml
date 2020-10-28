@@ -1,0 +1,34 @@
+source:
+  jsonschema:
+    title: Input
+    type: object
+    properties:
+      site_no:
+        type: string
+      site_tp_cd:
+        type: string
+      station_nm:
+        type: string
+      tz_cd:
+        type: string
+target:
+  jsonschema:
+    title: Output
+    type: object
+    properties:
+      StationId:
+        type: string
+      StationType:
+        type: string
+      StationName:
+        type: string
+      Timezone:
+        type: string
+transform:
+  jsonata: |
+    {
+      "StationId": site_no,
+      "StationType": site_tp_cd,
+      "StationName": station_nm,
+      "Timezone": tz_cd
+    }

@@ -1,0 +1,63 @@
+{
+  "terraform": {
+    "required_providers": {
+      "plausible": {
+        "source": "beaucronin/plausible",
+        "version": "0.1.6"
+      }
+    }
+  },
+  "provider": {
+    "plausible": [
+      {
+        "app_name": "totality"
+      }
+    ]
+  },
+  "variable": {
+    "app_home": {
+      "default": ".."
+    },
+    "app_name": {
+      "default": "totality"
+    }
+  },
+  "locals": {
+    "functions_home": "${var.app_home}/functions"
+  },
+  "resource": {
+    "plausible_http_api": {
+      "public": {}
+    },
+    "plausible_function": {
+      "post-observations": {
+        "source": "${local.functions_home}/retrieve-stations/",
+        "api_route_trigger": [
+          {
+            "http_api": "public",
+            "route": "/observations",
+            "method": "post",
+            "content_type": "application/json"
+          }
+        ]
+      },
+      "example-interpreter": {
+        "source": "${local.functions_home}/retrieve-stations/",
+        "subscription_trigger": [
+          {
+            "publisher": "observation-events"
+          }
+        ]
+      }
+    },
+    "plausible_object_store": {
+      "my-store": {}
+    },
+    "plausible_keyvalue_store": {
+      "observations": {}
+    },
+    "plausible_publisher": {
+      "observation-events": {}
+    }
+  }
+}

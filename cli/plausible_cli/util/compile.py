@@ -113,7 +113,6 @@ resource_schemas = {
                 doc={
                     "title": "function",
                     "text": "The function resource, which is the programmatic building block of Plausible applications. Functions are the primary home for executable code, whereas the remaining config is provided in declarative terms.",
-                    "break": True,
                     "label": "resource",
                     "example": """
 ```yaml
@@ -142,7 +141,6 @@ resource_schemas = {
                 doc={
                     "title": "http_api",
                     "text": "The resource type representing an HTTP API. It is described through a valid OpenAPI 3.0 specification",
-                    "break": True,
                     "label": "resource",
                     "example": """
 ```yaml
@@ -162,7 +160,6 @@ resource_schemas = {
                 doc={
                     "title": "publisher",
                     "text": "The publisher resource, which is a combined pub/sub topic and message queue. Like a queue store, a publisher can store messages for a period of time until they are successfully consumed by the subscribers. And like a notification topic, a publisher can deliver messages to multiple subscribers.",
-                    "break": True,
                     "label": "resource",
                 },
             )
@@ -176,7 +173,6 @@ resource_schemas = {
                 doc={
                     "title": "object_store",
                     "text": "The object store resource, which is capable of storing binary objects (blobs) at key addresses. These objects can correspond to many things, from text files to digital media to archived data.",
-                    "break": True,
                     "label": "resource",
                 },
             )
@@ -240,7 +236,6 @@ resource_schemas = {
                 doc={
                     "title": "keyvalue_store",
                     "text": "The key-value store resource",
-                    "break": True,
                     "label": "resource",
                 },
             ),
@@ -328,7 +323,6 @@ resource_schemas = {
                 doc={
                     "title": "stream_analytics",
                     "text": "The stream analytics resource, which processes events on a windowed basis, possibly filtering, grouping by, and aggregating",
-                    "break": True,
                     "label": "resource",
                 },
             )

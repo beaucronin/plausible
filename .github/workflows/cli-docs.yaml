@@ -2,7 +2,7 @@ name: CLI Docs
 on:
   push:
     paths:
-      - 'cli/plausible_cli'
+      - 'cli'
 
 jobs:
   docs:

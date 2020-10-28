@@ -1,8 +1,8 @@
 name: CLI Docs
-on:
-  push:
-    paths:
-      - 'cli'
+on: [push]
+  # push:
+  #   paths:
+  #     - 'cli'
 
 jobs:
   docs:

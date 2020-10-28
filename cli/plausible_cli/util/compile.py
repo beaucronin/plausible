@@ -180,6 +180,12 @@ resource_schemas = {
                     "title": "object_store",
                     "text": "The object store resource, which is capable of storing binary objects (blobs) at key addresses. These objects can correspond to many things, from text files to digital media to archived data.",
                     "label": "resource",
+                    "example": """
+```yaml
+- object_store:
+    name: my-store
+```
+"""
                 },
             )
         },

@@ -161,6 +161,12 @@ resource_schemas = {
                     "title": "publisher",
                     "text": "The publisher resource, which is a combined pub/sub topic and message queue. Like a queue store, a publisher can store messages for a period of time until they are successfully consumed by the subscribers. And like a notification topic, a publisher can deliver messages to multiple subscribers.",
                     "label": "resource",
+                    "example": """
+```yaml
+- publisher:
+    name: my-publisher
+```
+""",
                 },
             )
         },

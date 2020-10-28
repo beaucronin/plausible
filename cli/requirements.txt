@@ -2,4 +2,4 @@ colorama
 python-terraform
 shellingham
 typer
-strictyaml
+git+https://github.com/beaucronin/strictyaml

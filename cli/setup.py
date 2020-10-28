@@ -30,7 +30,7 @@ setup(
         "python-terraform",
         "shellingham",
         "typer",
-        "strictyaml",
+        "git+https://github.com/beaucronin/strictyaml",
     ],
     # Scripts
     entry_points={

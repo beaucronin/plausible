@@ -23,13 +23,9 @@ jobs:
         run: |
           cd cli
           pls docs
-      - uses: EndBug/add-and-commit@v5 # You can change this to use a specific version
+      - uses: EndBug/add-and-commit@v5
         with:
-          # The arguments for the `git add` command (see the paragraph below for more info)
-          # Default: '.'
           add: 'cli/config.md'
-
         env:
-          # This is necessary in order to push a commit to the repo
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # Leave this line unchanged
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
